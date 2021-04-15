@@ -23,11 +23,10 @@ const handleBook = async () => {
   };
 
   const imgName = bookSelect.alt.trim().toLowerCase();
-  handleDownload(bookSelect.src, imgName);
+
+  return bookSelect;
 };
 
-function init() {
-  handleBook();
+export default function api() {
+  return handleBook();
 }
-
-init();
