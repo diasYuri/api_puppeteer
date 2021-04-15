@@ -1,3 +1,4 @@
+import { handleDownload } from "./helpers/handleDownloadImg.js";
 import { RandomValue } from "./helpers/randomValue.js";
 //import amazonApi from "./service/amazon-api.js";
 import mockApi from "./service/mock.js";
@@ -21,7 +22,8 @@ const handleBook = async () => {
     alt: bookSelect.alt,
   };
 
-  console.log(bookSelect);
+  const imgName = bookSelect.alt.trim().toLowerCase();
+  handleDownload(bookSelect.src, imgName);
 };
 
 function init() {
