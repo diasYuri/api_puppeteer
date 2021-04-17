@@ -1,25 +1,32 @@
-import puppeteer from "puppeteer";
+/* eslint-disable no-undef */
+import puppeteer from 'puppeteer'
 
-export default async function amazonApi() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto("https://www.amazon.com.br/gp/bestsellers/books/");
+export default async function amazonApi () {
+  const browser = await puppeteer.launch({
+    headless: true,
+    // executablePath: "/usr/bin/chromium-browser",
+    args: ['--no-sandbox', '--disable-gpu', '--disable-dev-shm-usage']
+  })
+
+  const page = await browser.newPage()
+  await page.goto('https://www.amazon.com.br/gp/bestsellers/books/', {
+    timeout: 0,
+    waitUntil: 'networkidle0'
+  })
 
   const books = await page.evaluate(() => {
-    ElemtList = document.querySelectorAll("ol li img");
+    const ElemtList = document.querySelectorAll('ol li img')
 
-    const bookList = [...ElemtList];
+    const bookList = [...ElemtList]
 
-    const books = bookList.map(({ src, alt }) => {
-      return {
-        src,
-        alt,
-      };
-    });
+    const booksResponse = bookList.map(({ src, alt }) => ({
+      src,
+      alt
+    }))
 
-    return books;
-  });
+    return booksResponse
+  })
 
-  await browser.close();
-  return books;
+  await browser.close()
+  return books
 }
