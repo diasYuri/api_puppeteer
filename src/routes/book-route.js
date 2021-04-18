@@ -1,16 +1,19 @@
 /* eslint-disable linebreak-style */
 import express from 'express'
-import bookController from '../controllers/bookControlller.js'
+import { BookController } from '../controllers/bookControlller.js'
 
 const bookRoute = express.Router()
 
 bookRoute.get('/', async (_req, res) => {
   try {
-    const book = await bookController()
+    const controller = new BookController()
+
+    const book = await controller.indicateBook()
 
     return res.json(book)
   } catch (error) {
-    return res.json({ error })
+    console.log(error)
+    return res.json({ error: error })
   }
 })
 
